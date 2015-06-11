@@ -1,0 +1,14 @@
+{
+  "name": "pinf-to-nwjs",
+  "scripts": {
+    "install": "./node_modules/.bin/smi install"
+  },
+  "dependencies": {
+    "smi.cli": "0.x"
+  },
+  "config": {
+    "smi.cli": {
+      "packagesDirectory": "node_modules"
+    }
+  }
+}
