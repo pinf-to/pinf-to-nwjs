@@ -9,7 +9,7 @@ function init {
 
 	pushd "$__BO_DIR__/../demo-app" > /dev/null
 
-		BO_callPlugin "bash.origin.nw@0.1.0" run "$__BO_DIR__/../demo-app"
+		BO_callPlugin "bash.origin.nw@0.1.0" run "$@"
 
 	popd > /dev/null
 

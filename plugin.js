@@ -1,6 +1,8 @@
 
 exports.for = function (API) {
 
+	const TEMPLATE_BUNDLES_PATH = "bundles";
+
 	var exports = {};
 
 	exports.turn = function (resolvedConfig) {
@@ -23,8 +25,6 @@ exports.for = function (API) {
 			var templatePath = API.PATH.join(__dirname, "template");
 			var templateDescriptorPath = API.PATH.join(templatePath, "package.json");
 			var templateDescriptor = API.FS.readJsonSync(templateDescriptorPath);
-
-			API.ASSERT.equal(typeof templateDescriptor.directories.deploy, "string", "'directories.deploy' must be set in '" + templateDescriptorPath + "'");
 
 			var relativeBaseUri = "";
 
@@ -146,7 +146,7 @@ exports.for = function (API) {
 							return copy(API.PATH.join(templatePath), toPath, function (err) {
 								if (err) return callback(err);
 
-								return copy(fromPath, API.PATH.join(toPath, templateDescriptor.directories.deploy), callback);
+								return copy(fromPath, API.PATH.join(toPath, TEMPLATE_BUNDLES_PATH), callback);
 							});
 						});
 					}
@@ -185,12 +185,12 @@ exports.for = function (API) {
 										"overlay": {
 											"layout": {
 												"directories": {
-											        "bundles": API.PATH.relative(API.PATH.dirname(programDescriptorPath), API.PATH.join(pubPath, templateDescriptor.directories.deploy))
+											        "bundles": API.PATH.relative(API.PATH.dirname(programDescriptorPath), API.PATH.join(pubPath, TEMPLATE_BUNDLES_PATH))
 											    }
 										    }
 										}
 									},
-									"path": "./" + API.PATH.join(templateDescriptor.directories.deploy, packageDescriptor.exports.bundles[bundleUri])
+									"path": "./" + API.PATH.join(TEMPLATE_BUNDLES_PATH, packageDescriptor.exports.bundles[bundleUri])
 								};
 							}
 						}
@@ -262,7 +262,7 @@ exports.for = function (API) {
 							return writeProgramDescriptor(function (err) {
 								if (err) return callback(err);
 
-								var targetPath = API.PATH.join(pubPath, templateDescriptor.directories.deploy);
+								var targetPath = API.PATH.join(pubPath, TEMPLATE_BUNDLES_PATH);
 
 								API.FS.removeSync(targetPath);
 
@@ -303,7 +303,7 @@ exports.for = function (API) {
 						commands.push('npm install --production --unsafe-perm');
 					}
 
-					commands.push('BO_callPlugin "bash.origin.nw@0.1.0" run "' + pubPath + '"');
+					commands.push(API.PATH.join(__dirname, "bin/run-app") + ' "' + pubPath + '"');
 
 					return API.runProgramProcess({
 						label: API.getDeclaringPathId() + "/" + resolvedConfig.$to,
