@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>devcomp TEMPLATE!</title>
-  </head>
-  <body>
-    <h1>devcomp TEMPLATE!</h1>
-    We are using node.js <script>document.write(process.version)</script>.
-  </body>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+    	HTML,
+    	BODY {
+    		margin: 0px;
+    		padding: 0px;
+    	}
+    </style>
+	<script src="%boot.loader.uri%"></script>
+</head>
+<body>
+ 	<script>
+		PINF.sandbox("./vortex-wrapper.js", function (sandbox) {
+			sandbox.main({
+                rootVortexUrl: "%boot.bundle.uri%"
+            });
+		}, function (err) {
+			console.error("Error while loading bundle '%boot.bundle.uri%':", err.stack);
+		});
+	</script>
+</body>
 </html>

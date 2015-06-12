@@ -115,7 +115,7 @@ exports.for = function (API) {
 									.pipe(GULP_REPLACE(/%[^%]+%/g, function (matched) {
 										// TODO: Arrive at minimal set of core variables and options to add own.
 										if (matched === "%boot.loader.uri%") {
-											return (relativeBaseUri?relativeBaseUri+"/":"") + "bundles/loader.js";
+											return (relativeBaseUri?relativeBaseUri+"/":"") + "bundles.loader.js";
 										} else
 										if (matched === "%boot.bundle.uri%") {
 											return (relativeBaseUri?relativeBaseUri+"/":"") + ("bundles/" + packageDescriptor.main).replace(/\/\.\//, "/");
@@ -146,7 +146,15 @@ exports.for = function (API) {
 							return copy(API.PATH.join(templatePath), toPath, function (err) {
 								if (err) return callback(err);
 
-								return copy(fromPath, API.PATH.join(toPath, TEMPLATE_BUNDLES_PATH), callback);
+								return copy(fromPath, API.PATH.join(toPath, TEMPLATE_BUNDLES_PATH), function (err) {
+									if (err) return callback(err);
+
+									return API.FS.copy(
+										require.resolve("pinf-loader-js/loader.js"),
+										API.PATH.join(toPath, TEMPLATE_BUNDLES_PATH + ".loader.js"),
+										callback
+									);
+								});
 							});
 						});
 					}

@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "main": "plugin.js",
   "dependencies": {
-    "to.pinf.lib": "0.1.x",
     "bash.origin": "0.1.x",
-    "smi.cli": "0.x"
+    "pinf-loader-js": "^0.4.12",
+    "smi.cli": "0.x",
+    "to.pinf.lib": "0.1.x"
   },
   "scripts": {
     "install": "./node_modules/.bin/smi install"
